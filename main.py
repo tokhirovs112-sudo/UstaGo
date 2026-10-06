@@ -104,10 +104,20 @@ async def add_worker_review(
 ):
     photo_url = None
     if photo and photo.filename:
-        file_path = os.path.join(UPLOAD_DIR, photo.filename)
-        with open(file_path, "wb") as buffer:
-            shutil.copyfileobj(photo.file, buffer)
-        photo_url = f"/uploads/{photo.filename}"
+        try:
+            # Papka borligini tekshirish
+            os.makedirs(UPLOAD_DIR, exist_ok=True)
+            
+            # Fayl nomidagi probellarni o'chirish
+            safe_filename = photo.filename.replace(" ", "_")
+            file_path = os.path.join(UPLOAD_DIR, safe_filename)
+            
+            with open(file_path, "wb") as buffer:
+                shutil.copyfileobj(photo.file, buffer)
+            photo_url = f"/uploads/{safe_filename}"
+        except Exception as e:
+            print(f"Rasm saqlashda xatolik: {e}")
+            photo_url = None
 
     if worker_name not in WORKER_REVIEWS_DB:
         WORKER_REVIEWS_DB[worker_name] = []
