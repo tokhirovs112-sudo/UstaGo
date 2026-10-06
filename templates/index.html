@@ -3,118 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UstaGo - Ustalar Xizmati</title>
+    <title>UstaGo - Professional Xizmatlar Platformasi</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            max-width: 800px;
+            max-width: 850px;
             margin: 0 auto;
             padding: 20px;
             background-color: #f4f6f9;
             color: #333;
         }
-        h1, h2, h3 {
-            color: #2c3e50;
-        }
+        h1 { color: #1a252f; text-align: center; }
+        .subtitle { text-align: center; color: #666; margin-bottom: 30px; }
+        
         .section-box {
             background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             margin-bottom: 25px;
         }
         label {
-            font-weight: bold;
+            font-weight: 600;
             display: block;
-            margin-bottom: 8px;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            color: #2c3e50;
         }
         select, input, textarea {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
             box-sizing: border-box;
-            font-size: 14px;
+            font-size: 15px;
+            background-color: #fff;
+        }
+        select:focus, input:focus, textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
         }
         button {
-            background-color: #28a745;
+            background-color: #10b981;
             color: white;
             border: none;
-            padding: 12px 20px;
+            padding: 14px;
             font-size: 16px;
             font-weight: bold;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
             width: 100%;
+            margin-top: 15px;
+            transition: background 0.2s;
         }
-        button:hover {
-            background-color: #218838;
-        }
+        button:hover { background-color: #059669; }
+        
         .worker-card {
             background: #ffffff;
-            border-left: 4px solid #007bff;
-            padding: 12px;
-            margin-top: 10px;
-            border-radius: 4px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-left: 5px solid #3b82f6;
+            padding: 15px;
+            margin-top: 12px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
         }
         .review-card {
-            background: #f8f9fa;
-            border-left: 4px solid #28a745;
-            padding: 10px 15px;
+            background: #f8fafc;
+            border-left: 4px solid #10b981;
+            padding: 12px;
             margin-top: 10px;
+            border-radius: 6px;
+        }
+        .badge {
+            display: inline-block;
+            background: #e2e8f0;
+            padding: 3px 8px;
             border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-    <h1 style="text-align: center;">🛠️ UstaGo Platformasi</h1>
-    <p style="text-align: center; color: #666;">Tezkor va ishonchli ustalarni toping hamda baho bering!</p>
+    <h1>🛠️ UstaGo Platformasi</h1>
+    <p class="subtitle">Maishiy texnika va elektronika bo'yicha saralangan mutaxassislar</p>
 
-    <!-- 1-BO'LIM: Xizmat turini tanlash va Ustalarni ko'rish -->
+    <!-- 1-BO'LIM: Kategoriya, Xizmat va Brend bo'yicha qidiruv -->
     <div class="section-box">
         <h2>🔍 Kerakli xizmatni tanlang</h2>
-        <label for="service-select">Xizmat turi:</label>
-        <select id="service-select" onchange="fetchTechnicians()">
-            <option value="">-- Xizmatni tanlang --</option>
-            <option value="Telefon ta’miri">Telefon ta’miri</option>
-            <option value="Kompyuter ta’miri">Kompyuter ta’miri</option>
-            <option value="Televizor ta’miri">Televizor ta’miri</option>
-            <option value="Kir yuvish mashinasi">Kir yuvish mashinasi ta'miri</option>
-            <option value="Santexnik">Santexnik xizmati</option>
+        
+        <!-- 1. Kategoriya -->
+        <label for="category-select">Bo'limni tanlang:</label>
+        <select id="category-select" onchange="onCategoryChange()">
+            <option value="">-- Bo'limni tanlang --</option>
+            {% for category in categories.keys() %}
+                <option value="{{ category }}">{{ category }}</option>
+            {% endfor %}
         </select>
 
-        <div id="technicians-list">
-            <p style="color: #777;">Xizmat turini tanlasangiz, bu yerda mos ustalar ro'yxati chiqadi.</p>
+        <!-- 2. Xizmat turi -->
+        <label for="service-select">Xizmat yoki Muammo turi:</label>
+        <select id="service-select" disabled onchange="onServiceChange()">
+            <option value="">-- Avval bo'limni tanlang --</option>
+        </select>
+
+        <!-- 3. Qurilma brendi -->
+        <label for="brand-select">Qurilma brendi (ixtiyoriy):</label>
+        <select id="brand-select" disabled onchange="fetchTechnicians()">
+            <option value="">-- Brendni tanlang --</option>
+            {% for brand in brands %}
+                <option value="{{ brand }}">{{ brand }}</option>
+            {% endfor %}
+        </select>
+
+        <!-- Natijalar chiqadigan joy -->
+        <div id="technicians-list" style="margin-top: 20px;">
+            <p style="color: #64748b;">Xizmat turini tanlasangiz, mos ustalarning ro'yxati bu yerda ko'rinadi.</p>
         </div>
     </div>
 
     <!-- 2-BO'LIM: Ustalarga berilgan baholar va fikrlar -->
     <div class="section-box">
         <h2>⭐️ Ustalarga berilgan baholar va izohlar</h2>
-
         <div id="reviews-list">
             {% if reviews_db %}
                 {% for worker, reviews in reviews_db.items() %}
                     <div style="margin-bottom: 20px;">
-                        <h3 style="margin-bottom: 5px; color: #007bff;">👨‍🔧 {{ worker }}</h3>
+                        <h3 style="margin-bottom: 5px; color: #2563eb;">👨‍🔧 {{ worker }}</h3>
                         {% for r in reviews %}
                             <div class="review-card">
-                                <strong>{{ r.client }}</strong> — <span style="color: #ffc107;">{{ r.rating }} ⭐</span>
+                                <strong>{{ r.client }}</strong> — <span style="color: #f59e0b;">{{ r.rating }} ⭐</span>
                                 <p style="margin: 5px 0 0 0;">"{{ r.comment }}"</p>
                             </div>
                         {% endfor %}
                     </div>
                 {% endfor %}
             {% else %}
-                <p style="color: #777;">Hali hech qaysi ustaga izoh qoldirilmagan.</p>
+                <p style="color: #64748b;">Hali izohlar qoldirilmagan.</p>
             {% endif %}
         </div>
     </div>
 
-    <!-- 3-BO'LIM: Aniq ustaga fikr qoldirish formasi -->
+    <!-- 3-BO'LIM: Ustaga fikr qoldirish formasi -->
     <div class="section-box">
         <h3>✍️ Ustaga fikr qoldirish</h3>
         <form action="/add-worker-review" method="post">
@@ -127,48 +157,84 @@
             </select>
 
             <label for="client_name">Ismingiz:</label>
-            <input type="text" id="client_name" name="client_name" placeholder="Masalan: Ali" required>
+            <input type="text" id="client_name" name="client_name" placeholder="Masalan: Murod" required>
 
             <label for="rating">Baho bering:</label>
             <select name="rating" id="rating">
-                <option value="5">⭐⭐⭐⭐⭐ (5/5)</option>
-                <option value="4">⭐⭐⭐⭐ (4/5)</option>
-                <option value="3">⭐⭐⭐ (3/5)</option>
-                <option value="2">⭐⭐ (2/5)</option>
-                <option value="1">⭐ (1/5)</option>
+                <option value="5">⭐⭐⭐⭐⭐ (5/5) - A'lo</option>
+                <option value="4">⭐⭐⭐⭐ (4/5) - Yaxshi</option>
+                <option value="3">⭐⭐⭐ (3/5) - Qoniqarli</option>
+                <option value="2">⭐⭐ (2/5) - Yomon</option>
+                <option value="1">⭐ (1/5) - Juda yomon</option>
             </select>
 
             <label for="comment">Izohingiz:</label>
-            <textarea id="comment" name="comment" placeholder="Masalan: Bobur juda sifatli va ozoda ishladi, tavsiya qilaman!" required style="height: 90px;"></textarea>
+            <textarea id="comment" name="comment" placeholder="Ustaning xizmati haqida fikringizni yozing..." required style="height: 90px;"></textarea>
 
             <button type="submit">Fikrni saqlash</button>
         </form>
     </div>
 
     <script>
-        async function fetchTechnicians() {
-            const service = document.getElementById('service-select').value;
+        async function onCategoryChange() {
+            const category = document.getElementById('category-select').value;
+            const serviceSelect = document.getElementById('service-select');
+            const brandSelect = document.getElementById('brand-select');
             const container = document.getElementById('technicians-list');
-            
-            if (!service) {
-                container.innerHTML = '<p style="color: #777;">Xizmat turini tanlasangiz, bu yerda mos ustalar ro\'yxati chiqadi.</p>';
-                return;
-            }
 
-            const response = await fetch(`/technicians?service=${encodeURIComponent(service)}`);
-            const technicians = await response.json();
+            serviceSelect.innerHTML = '<option value="">-- Xizmatni tanlang --</option>';
+            serviceSelect.disabled = !category;
+            brandSelect.disabled = true;
+            container.innerHTML = '<p style="color: #64748b;">Xizmat turini tanlasangiz, mos ustalarning ro\'yxati bu yerda ko\'rinadi.</p>';
+
+            if (!category) return;
+
+            const res = await fetch(`/get-services?category=${encodeURIComponent(category)}`);
+            const services = await res.json();
+
+            services.forEach(serv => {
+                const opt = document.createElement('option');
+                opt.value = serv;
+                opt.textContent = serv;
+                serviceSelect.appendChild(opt);
+            });
+        }
+
+        function onServiceChange() {
+            const service = document.getElementById('service-select').value;
+            const brandSelect = document.getElementById('brand-select');
+            brandSelect.disabled = !service;
+            fetchTechnicians();
+        }
+
+        async function fetchTechnicians() {
+            const category = document.getElementById('category-select').value;
+            const service = document.getElementById('service-select').value;
+            const brand = document.getElementById('brand-select').value;
+            const container = document.getElementById('technicians-list');
+
+            if (!category || !service) return;
+
+            const url = `/get-technicians?category=${encodeURIComponent(category)}&service=${encodeURIComponent(service)}&brand=${encodeURIComponent(brand)}`;
+            const res = await fetch(url);
+            const technicians = await res.json();
 
             if (technicians.length === 0) {
-                container.innerHTML = '<p style="color: #d9534f;">Hozircha ushbu yo\'nalish bo\'yicha ustalar topilmadi.</p>';
+                container.innerHTML = '<p style="color: #ef4444; font-weight: 500;">Ushbu yo\'nalish bo\'yicha hozircha ustalar topilmadi.</p>';
                 return;
             }
 
-            let html = '<h3 style="margin-top: 15px;">Mavjud ustalar:</h3>';
+            let html = `<h3 style="margin-top: 15px; color: #1e293b;">Mavjud ustalar (${brand ? brand + ' uchun' : 'Barcha brendlar'}):</h3>`;
             technicians.forEach(tech => {
                 html += `
                     <div class="worker-card">
-                        <strong>👨‍🔧 ${tech[0]}</strong> — <span style="color: #ffc107;">${tech[1]} ⭐</span> (${tech[2]} ta buyurtma)
-                        <p style="margin: 5px 0 0 0; color: #666;">Masofa: ${tech[3]}</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <strong>👨‍🔧 ${tech[0]}</strong>
+                            <span class="badge">📍 ${tech[3]}</span>
+                        </div>
+                        <p style="margin: 8px 0 0 0; color: #475569;">
+                            <span style="color: #f59e0b;">${tech[1]} ⭐</span> | Bajarilgan buyurtmalar: <strong>${tech[2]} ta</strong>
+                        </p>
                     </div>
                 `;
             });
