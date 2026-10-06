@@ -112,7 +112,9 @@
                                             </span>
                                         </div>
                                         <p class="text-slate-600 text-xs italic">"{{ r.comment }}"</p>
-                                        {% if r.photo %}
+                                        
+                                        <!-- RASM CHIQARISH QISMI XAVFSIZ QILINDI -->
+                                        {% if r.get('photo') %}
                                             <div class="mt-2">
                                                 <a href="{{ r.photo }}" target="_blank">
                                                     <img src="{{ r.photo }}" alt="Muammo rasmi" class="h-28 w-28 object-cover rounded-xl border border-slate-200 hover:scale-105 transition duration-200 shadow-sm">
