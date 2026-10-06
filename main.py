@@ -1,18 +1,9 @@
 import os
-import shutil
-from fastapi import FastAPI, Request, Form, File, UploadFile
+from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
-from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
-
-# Yuklangan rasmlar papkasini yaratish
-UPLOAD_DIR = "uploads"
-os.makedirs(UPLOAD_DIR, exist_ok=True)
-
-# Statik fayllarni ulash
-app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
 # Shablonlar papkasi
 templates = Jinja2Templates(directory="templates")
@@ -62,10 +53,10 @@ BRANDS = ["Apple", "Samsung", "Xiaomi", "LG", "Bosch", "Beko", "Artel", "Lenovo"
 
 WORKER_REVIEWS_DB = {
     "Jasurbek Aliyev (iPhone master)": [
-        {"client": "Murod", "comment": "Ekranini 20 daqiqada almashtirib berdi, super!", "rating": 5, "photo": ""}
+        {"client": "Murod", "comment": "Ekranini 20 daqiqada almashtirib berdi, super!", "rating": 5}
     ],
     "Nodir Abdullayev": [
-        {"client": "Sardor", "comment": "Kir mashinani gigiyenik tozalab berdi, hidlar yo'qoldi.", "rating": 5, "photo": ""}
+        {"client": "Sardor", "comment": "Kir mashinani gigiyenik tozalab berdi, hidlar yo'qoldi.", "rating": 5}
     ]
 }
 
@@ -99,30 +90,14 @@ async def add_worker_review(
     worker_name: str = Form(...),
     client_name: str = Form(...),
     comment: str = Form(...),
-    rating: int = Form(5),
-    photo: UploadFile = File(None)
+    rating: int = Form(5)
 ):
-    photo_url = ""
-    if photo and photo.filename:
-        try:
-            os.makedirs(UPLOAD_DIR, exist_ok=True)
-            safe_filename = photo.filename.replace(" ", "_")
-            file_path = os.path.join(UPLOAD_DIR, safe_filename)
-            
-            with open(file_path, "wb") as buffer:
-                shutil.copyfileobj(photo.file, buffer)
-            photo_url = f"/uploads/{safe_filename}"
-        except Exception as e:
-            print(f"Rasm yuklash xatosi: {e}")
-            photo_url = ""
-
     if worker_name not in WORKER_REVIEWS_DB:
         WORKER_REVIEWS_DB[worker_name] = []
         
     WORKER_REVIEWS_DB[worker_name].append({
         "client": client_name,
         "comment": comment,
-        "rating": rating,
-        "photo": photo_url
+        "rating": rating
     })
     return RedirectResponse(url="/", status_code=303)
