@@ -4,10 +4,10 @@ from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
 
-# Templates papkasini ko'rsatamiz
+# Подключаем папку с шаблонами
 templates = Jinja2Templates(directory="templates")
 
-# Kategoriya va Xizmatlar
+# База данных категорий, услуг и мастеров
 SERVICES_DB = {
     "Maishiy texnika": {
         "Kir yuvish mashinasiga gigiyenik xizmat ko'rsatish va tozalash": [
@@ -68,7 +68,6 @@ async def read_root(request: Request):
                 if w[0] not in all_workers:
                     all_workers.append(w[0])
 
-    # Jinja2 rendering orqali o'zgaruvchilarni HTMLga uzatamiz
     return templates.TemplateResponse("index.html", {
         "request": request,
         "categories": SERVICES_DB,
