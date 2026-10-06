@@ -3,348 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UstaGo</title>
+    <title>UstaGo - Ustalar Xizmati</title>
     <style>
-        * { box-sizing: border-box; }
-        body { margin: 0; font-family: Arial, sans-serif; background: #f4f7f6; color: #222; }
-        
-        nav { 
-            background: #168f5b; 
-            color: white; 
-            padding: 18px 8%; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f6f9;
+            color: #333;
         }
-        .logo { font-size: 25px; font-weight: bold; }
-        .nav-text { font-size: 14px; }
-
-        .hero { text-align: center; padding: 40px 20px 20px; }
-        .hero h1 { font-size: 38px; margin-bottom: 8px; }
-        .hero p { color: #666; font-size: 16px; margin: 0; }
-
-        .container { max-width: 800px; margin: auto; padding: 20px; }
-
-        /* Asosiy konteyner kartasi */
-        .app-card {
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .section-box {
             background: white;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            min-height: 350px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
         }
-
-        .section-title { 
-            text-align: center; 
-            margin-top: 0;
-            margin-bottom: 25px; 
-            font-size: 22px;
-        }
-
-        .service-grid { 
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 16px; 
-        }
-
-        .service-card { 
-            background: #f9fbf9; 
-            border: 1px solid #e1ebe5;
-            padding: 20px; 
-            border-radius: 12px; 
-            text-align: center; 
-            cursor: pointer; 
-            transition: 0.2s; 
-        }
-        .service-card:hover { 
-            transform: translateY(-3px); 
-            border-color: #168f5b;
-            background: #fff;
-        }
-        .service-icon { font-size: 36px; margin-bottom: 8px; }
-        .service-card h3 { margin: 0 0 6px 0; font-size: 18px; }
-        .service-card p { color: #777; margin: 0; font-size: 14px; }
-
-        .problem-buttons { 
-            display: flex; 
-            flex-direction: column;
-            gap: 12px; 
-            max-width: 400px;
-            margin: auto;
-        }
-
-        .problem-btn {
-            background: #f0f4f2;
-            color: #222;
-            border: 1px solid #ddd;
-            padding: 14px 20px;
-            border-radius: 10px;
-            text-align: left;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .problem-btn:hover {
-            background: #168f5b;
-            color: white;
-            border-color: #168f5b;
-        }
-
-        .technician { 
-            background: #f9fbf9; 
-            border: 1px solid #e1ebe5;
-            padding: 18px; 
-            margin-top: 12px; 
-            border-radius: 12px; 
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .technician h3 { margin: 0 0 6px 0; font-size: 18px; }
-        .technician p { margin: 3px 0; font-size: 14px; color: #555; }
-        .rating { color: #f0a500; font-weight: bold; }
-
-        button.action-btn { 
-            background: #168f5b; 
-            color: white; 
-            border: none; 
-            padding: 10px 16px; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-size: 14px; 
-        }
-        button.action-btn:hover { background: #117448; }
-
-        .back-btn {
-            background: transparent;
-            border: none;
-            color: #168f5b;
-            font-size: 15px;
+        label {
             font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+        }
+        select, input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
             cursor: pointer;
-            padding: 0;
-            margin-bottom: 20px;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
+            width: 100%;
         }
-        .back-btn:hover { text-decoration: underline; }
-
-        textarea { 
-            width: 100%; 
-            padding: 12px; 
-            border: 1px solid #ddd; 
-            border-radius: 8px; 
-            font-family: Arial, sans-serif; 
-            font-size: 15px; 
-            resize: vertical;
+        button:hover {
+            background-color: #218838;
         }
-
-        footer { text-align: center; padding: 30px; margin-top: 30px; color: #777; }
-
-        @media (max-width: 600px) {
-            .service-grid { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 28px; }
-            .technician { flex-direction: column; align-items: flex-start; gap: 12px; }
+        .worker-card {
+            background: #ffffff;
+            border-left: 4px solid #007bff;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .review-card {
+            background: #f8f9fa;
+            border-left: 4px solid #28a745;
+            padding: 10px 15px;
+            margin-top: 10px;
+            border-radius: 4px;
         }
     </style>
 </head>
 <body>
 
-<nav>
-    <div class="logo">🔧 UstaGo</div>
-    <div class="nav-text">Ishonchli usta toping</div>
-</nav>
+    <h1 style="text-align: center;">🛠️ UstaGo Platformasi</h1>
+    <p style="text-align: center; color: #666;">Tezkor va ishonchli ustalarni toping hamda baho bering!</p>
 
-<section class="hero">
-    <h1>Ishonchli usta toping</h1>
-    <p>Muammoingizni tanlang va yaqin atrofdagi ustalarni toping.</p>
-</section>
+    <!-- 1-BO'LIM: Xizmat turini tanlash va Ustalarni ko'rish -->
+    <div class="section-box">
+        <h2>🔍 Kerakli xizmatni tanlang</h2>
+        <label for="service-select">Xizmat turi:</label>
+        <select id="service-select" onchange="fetchTechnicians()">
+            <option value="">-- Xizmatni tanlang --</option>
+            <option value="Telefon ta’miri">Telefon ta’miri</option>
+            <option value="Kompyuter ta’miri">Kompyuter ta’miri</option>
+            <option value="Televizor ta’miri">Televizor ta’miri</option>
+            <option value="Kir yuvish mashinasi">Kir yuvish mashinasi ta'miri</option>
+            <option value="Santexnik">Santexnik xizmati</option>
+        </select>
 
-<div class="container">
-    <!-- Asosiy almashtiriluvchi blok -->
-    <div class="app-card" id="app-view">
-        <!-- Boshlang'ich kontent Javascript orqali yuklanadi -->
+        <div id="technicians-list">
+            <p style="color: #777;">Xizmat turini tanlasangiz, bu yerda mos ustalar ro'yxati chiqadi.</p>
+        </div>
     </div>
-</div>
 
-<footer>
-    © 2026 UstaGo — Mahalliy ustalarni topish platformasi
-</footer>
+    <!-- 2-BO'LIM: Ustalarga berilgan baholar va fikrlar -->
+    <div class="section-box">
+        <h2>⭐️ Ustalarga berilgan baholar va izohlar</h2>
 
-<script>
-    // Asosiy xizmatlar ko'rinishini chiqarish
-    function renderCategories() {
-        document.getElementById("app-view").innerHTML = `
-            <h2 class="section-title">🛠️ Xizmat turini tanlang</h2>
-            <div class="service-grid">
-                <div class="service-card" onclick="showServices('Telefon ta’miri')">
-                    <div class="service-icon">📱</div>
-                    <h3>Telefon ta'miri</h3>
-                    <p>Telefoningizdagi muammolar</p>
-                </div>
-                <div class="service-card" onclick="showServices('Kompyuter ta’miri')">
-                    <div class="service-icon">💻</div>
-                    <h3>Kompyuter ta'miri</h3>
-                    <p>Kompyuter va laptop</p>
-                </div>
-                <div class="service-card" onclick="showServices('Televizor ta’miri')">
-                    <div class="service-icon">📺</div>
-                    <h3>Televizor ta'miri</h3>
-                    <p>TV va ekran muammolari</p>
-                </div>
-                <div class="service-card" onclick="showServices('Kir yuvish mashinasi')">
-                    <div class="service-icon">🧺</div>
-                    <h3>Kir yuvish mashinasi</h3>
-                    <p>Maishiy texnika ta'miri</p>
-                </div>
-            </div>
-        `;
-    }
+        <div id="reviews-list">
+            {% if reviews_db %}
+                {% for worker, reviews in reviews_db.items() %}
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="margin-bottom: 5px; color: #007bff;">👨‍🔧 {{ worker }}</h3>
+                        {% for r in reviews %}
+                            <div class="review-card">
+                                <strong>{{ r.client }}</strong> — <span style="color: #ffc107;">{{ r.rating }} ⭐</span>
+                                <p style="margin: 5px 0 0 0;">"{{ r.comment }}"</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p style="color: #777;">Hali hech qaysi ustaga izoh qoldirilmagan.</p>
+            {% endif %}
+        </div>
+    </div>
 
-    // Muammolarni tanlash
-    function showServices(service) {
-        document.getElementById("app-view").innerHTML = `
-            <button class="back-btn" onclick="renderCategories()">⬅️ Orqaga</button>
-            <h2 class="section-title">${service}</h2>
-            <p style="text-align: center; color: #666; margin-bottom: 20px;">Muammoni tanlang:</p>
-            <div class="problem-buttons">
-                <button class="problem-btn" onclick="showTechnicians('${service}', 'Ishlamayapti')">🔧 Ishlamayapti</button>
-                <button class="problem-btn" onclick="showTechnicians('${service}', 'Sekin ishlayapti')">⚡ Sekin ishlayapti</button>
-                <button class="problem-btn" onclick="showTechnicians('${service}', 'Ekran muammosi')">🖥️ Ekran muammosi</button>
-                <button class="problem-btn" onclick="showTechnicians('${service}', 'Boshqa muammo')">❓ Boshqa muammo</button>
-            </div>
-        `;
-    }
+    <!-- 3-BO'LIM: Aniq ustaga fikr qoldirish formasi -->
+    <div class="section-box">
+        <h3>✍️ Ustaga fikr qoldirish</h3>
+        <form action="/add-worker-review" method="post">
+            
+            <label for="worker_name">Ustani tanlang:</label>
+            <select name="worker_name" id="worker_name" required>
+                {% for worker in workers %}
+                    <option value="{{ worker }}">{{ worker }}</option>
+                {% endfor %}
+            </select>
 
-    // Ustalar ro'yxatini chiqarish
-    async function showTechnicians(service, problem) {
-        try {
-            let response = await fetch("/technicians");
-            let technicians = await response.json();
+            <label for="client_name">Ismingiz:</label>
+            <input type="text" id="client_name" name="client_name" placeholder="Masalan: Ali" required>
 
-            let html = `
-                <button class="back-btn" onclick="showServices('${service}')">⬅️ Orqaga</button>
-                <h2 class="section-title">${service} — ${problem}</h2>
-                <p style="color: #666; margin-bottom: 15px;">👨‍🔧 Sizga mos ustalar:</p>
-            `;
+            <label for="rating">Baho bering:</label>
+            <select name="rating" id="rating">
+                <option value="5">⭐⭐⭐⭐⭐ (5/5)</option>
+                <option value="4">⭐⭐⭐⭐ (4/5)</option>
+                <option value="3">⭐⭐⭐ (3/5)</option>
+                <option value="2">⭐⭐ (2/5)</option>
+                <option value="1">⭐ (1/5)</option>
+            </select>
 
-            technicians.forEach(function(technician) {
-                let name = technician[0];
-                let rating = technician[1];
-                let jobs = technician[2];
-                let distance = technician[3];
+            <label for="comment">Izohingiz:</label>
+            <textarea id="comment" name="comment" placeholder="Masalan: Bobur juda sifatli va ozoda ishladi, tavsiya qilaman!" required style="height: 90px;"></textarea>
 
+            <button type="submit">Fikrni saqlash</button>
+        </form>
+    </div>
+
+    <script>
+        async function fetchTechnicians() {
+            const service = document.getElementById('service-select').value;
+            const container = document.getElementById('technicians-list');
+            
+            if (!service) {
+                container.innerHTML = '<p style="color: #777;">Xizmat turini tanlasangiz, bu yerda mos ustalar ro\'yxati chiqadi.</p>';
+                return;
+            }
+
+            const response = await fetch(`/technicians?service=${encodeURIComponent(service)}`);
+            const technicians = await response.json();
+
+            if (technicians.length === 0) {
+                container.innerHTML = '<p style="color: #d9534f;">Hozircha ushbu yo\'nalish bo\'yicha ustalar topilmadi.</p>';
+                return;
+            }
+
+            let html = '<h3 style="margin-top: 15px;">Mavjud ustalar:</h3>';
+            technicians.forEach(tech => {
                 html += `
-                    <div class="technician">
-                        <div>
-                            <h3>👨‍🔧 ${name}</h3>
-                            <p class="rating">⭐ ${rating} / 5</p>
-                            <p>🛠️ ${jobs} ta ish bajargan | 📍 ${distance} uzoqlikda</p>
-                        </div>
-                        <button class="action-btn" onclick="showProfile('${service}', '${problem}', '${name}', '${rating}', '${jobs}', '${distance}')">
-                            Ustani tanlash
-                        </button>
+                    <div class="worker-card">
+                        <strong>👨‍🔧 ${tech[0]}</strong> — <span style="color: #ffc107;">${tech[1]} ⭐</span> (${tech[2]} ta buyurtma)
+                        <p style="margin: 5px 0 0 0; color: #666;">Masofa: ${tech[3]}</p>
                     </div>
                 `;
             });
-
-            document.getElementById("app-view").innerHTML = html;
-        } catch (error) {
-            document.getElementById("app-view").innerHTML = `
-                <button class="back-btn" onclick="showServices('${service}')">⬅️ Orqaga</button>
-                <h2 class="section-title">❌ Xatolik</h2>
-                <p>Ustalarni yuklashda muammo bo'ldi.</p>
-            `;
+            container.innerHTML = html;
         }
-    }
+    </script>
 
-    // Usta profili
-    function showProfile(service, problem, name, rating, jobs, distance) {
-        document.getElementById("app-view").innerHTML = `
-            <button class="back-btn" onclick="showTechnicians('${service}', '${problem}')">⬅️ Orqaga</button>
-            <h2 class="section-title">👨‍🔧 ${name}</h2>
-            <p class="rating" style="text-align: center; font-size: 18px;">⭐ ${rating} / 5</p>
-            <div style="background: #f9fbf9; padding: 15px; border-radius: 10px; margin: 20px 0;">
-                <p>🛠️ <b>Bajarilgan ishlar:</b> ${jobs} ta</p>
-                <p>📍 <b>Masofa:</b> ${distance}</p>
-                <p>📝 <b>Usta haqida:</b> Mijozlarga sifatli va kafolatlangan xizmat ko'rsatadi.</p>
-            </div>
-            <button class="action-btn" style="width: 100%; padding: 14px; font-size: 16px;" onclick="requestService('${service}', '${problem}', '${name}', '${rating}', '${jobs}', '${distance}')">
-                📩 Ustaga murojaat qilish
-            </button>
-        `;
-    }
-
-    // Murojaat formasi
-    function requestService(service, problem, name, rating, jobs, distance) {
-        document.getElementById("app-view").innerHTML = `
-            <button class="back-btn" onclick="showProfile('${service}', '${problem}', '${name}', '${rating}', '${jobs}', '${distance}')">⬅️ Orqaga</button>
-            <h2 class="section-title">📨 So'rov yuborish</h2>
-            <p><b>Usta:</b> ${name}</p>
-            <p>Muammoingizni batafsilroq yozing:</p>
-            <textarea id="problemText" rows="5" placeholder="Masalan: Ekranida muammo bor, umuman yonmayapti..."></textarea>
-            <br><br>
-            <button class="action-btn" style="width: 100%; padding: 14px; font-size: 16px;" onclick="sendRequest('${name}')">📤 So'rovni yuborish</button>
-        `;
-    }
-
-    // So'rov yuborilgandagi holat
-    function sendRequest(name) {
-        let problemText = document.getElementById("problemText").value;
-        if (problemText.trim() === "") {
-            alert("Iltimos, muammoingizni yozing.");
-            return;
-        }
-
-        document.getElementById("app-view").innerHTML = `
-            <div style="text-align: center; padding: 20px 0;">
-                <div style="font-size: 50px; margin-bottom: 15px;">✅</div>
-                <h2 style="color: #168f5b; margin-bottom: 10px;">So'rov muvaffaqiyatli yuborildi!</h2>
-                <p><b>Usta:</b> ${name}</p>
-                <p style="color: #666;">Sizning so'rovingiz ustaga yetkazildi. Tez orada usta siz bilan bog'lanadi.</p>
-                <br>
-                <button class="action-btn" onclick="renderCategories()">Bosh sahifaga qaytish</button>
-            </div>
-        `;
-    }
-
-    // Sahifa yuklanganda birinchi kartalarni chiqarish
-    renderCategories();
-</script>
-<!-- Otzivlar bo'limi -->
-<section style="margin-top: 40px; padding: 20px; border-top: 1px solid #ccc;">
-    <h2>Mijozlar fikri (Otzivlar)</h2>
-
-    <!-- Kelgan otzivlar ro'yxati -->
-    <div id="reviews-list" style="margin-bottom: 20px;">
-        {% for review in reviews %}
-            <div style="background: #f9f9f9; padding: 10px; margin-bottom: 10px; border-radius: 6px;">
-                <strong>{{ review.name }}</strong> ({{ review.rating }} ⭐)
-                <p style="margin: 5px 0 0 0;">{{ review.comment }}</p>
-            </div>
-        {% endfor %}
-    </div>
-
-    <!-- Yangi otziv yozish formasi -->
-    <h3>Fikr qoldirish</h3>
-    <form action="/add-review" method="post" style="max-width: 400px; display: flex; flex-direction: column; gap: 10px;">
-        <input type="text" name="name" placeholder="Ismingiz" required style="padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
-        
-        <select name="rating" style="padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
-            <option value="5">⭐⭐⭐⭐⭐ (5/5)</option>
-            <option value="4">⭐⭐⭐⭐ (4/5)</option>
-            <option value="3">⭐⭐⭐ (3/5)</option>
-            <option value="2">⭐⭐ (2/5)</option>
-            <option value="1">⭐ (1/5)</option>
-        </select>
-
-        <textarea name="comment" placeholder="Izohingizni yozing..." required style="padding: 8px; border-radius: 4px; border: 1px solid #ccc; height: 80px;"></textarea>
-        
-        <button type="submit" style="padding: 10px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
-            Yuborish
-        </button>
-    </form>
-</section>
 </body>
 </html>
