@@ -7,17 +7,17 @@ from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
 
-# Yuklangan rasmlarni saqlash uchun papka yaratamiz
+# Yuklangan rasmlar papkasini yaratish
 UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-# Rasmlarni brauzerda ko'rsatish uchun statik papka sifatida ulaymiz
+# Statik fayllarni ulash
 app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
-# Shablonlar papkasini ulaymiz
+# Shablonlar papkasi
 templates = Jinja2Templates(directory="templates")
 
-# Kategoriya va Xizmatlar
+# Ma'lumotlar bazasi
 SERVICES_DB = {
     "Maishiy texnika": {
         "Kir yuvish mashinasiga gigiyenik xizmat ko'rsatish va tozalash": [
@@ -64,3 +64,58 @@ WORKER_REVIEWS_DB = {
     "Jasurbek Aliyev (iPhone master)": [
         {"client": "Murod", "comment": "Ekranini 20 daqiqada almashtirib berdi, super!", "rating": 5, "photo": None}
     ],
+    "Nodir Abdullayev": [
+        {"client": "Sardor", "comment": "Kir mashinani gigiyenik tozalab berdi, hidlar yo'qoldi.", "rating": 5, "photo": None}
+    ]
+}
+
+@app.get("/", response_class=HTMLResponse)
+async def read_root(request: Request):
+    all_workers = []
+    for category in SERVICES_DB.values():
+        for service, workers in category.items():
+            for w in workers:
+                if w[0] not in all_workers:
+                    all_workers.append(w[0])
+
+    return templates.TemplateResponse("index.html", {
+        "request": request,
+        "categories": SERVICES_DB,
+        "brands": BRANDS,
+        "workers": all_workers,
+        "reviews_db": WORKER_REVIEWS_DB
+    })
+
+@app.get("/get-services")
+async def get_services(category: str):
+    return list(SERVICES_DB.get(category, {}).keys())
+
+@app.get("/get-technicians")
+async def get_technicians(category: str, service: str, brand: str = ""):
+    return SERVICES_DB.get(category, {}).get(service, [])
+
+@app.post("/add-worker-review")
+async def add_worker_review(
+    worker_name: str = Form(...),
+    client_name: str = Form(...),
+    comment: str = Form(...),
+    rating: int = Form(5),
+    photo: UploadFile = File(None)
+):
+    photo_url = None
+    if photo and photo.filename:
+        file_path = os.path.join(UPLOAD_DIR, photo.filename)
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(photo.file, buffer)
+        photo_url = f"/uploads/{photo.filename}"
+
+    if worker_name not in WORKER_REVIEWS_DB:
+        WORKER_REVIEWS_DB[worker_name] = []
+        
+    WORKER_REVIEWS_DB[worker_name].append({
+        "client": client_name,
+        "comment": comment,
+        "rating": rating,
+        "photo": photo_url
+    })
+    return RedirectResponse(url="/", status_code=303)
