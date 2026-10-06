@@ -112,15 +112,6 @@
                                             </span>
                                         </div>
                                         <p class="text-slate-600 text-xs italic">"{{ r.comment }}"</p>
-                                        
-                                        <!-- RASM CHIQARISH QISMI XAVFSIZ QILINDI -->
-                                        {% if r.get('photo') %}
-                                            <div class="mt-2">
-                                                <a href="{{ r.photo }}" target="_blank">
-                                                    <img src="{{ r.photo }}" alt="Muammo rasmi" class="h-28 w-28 object-cover rounded-xl border border-slate-200 hover:scale-105 transition duration-200 shadow-sm">
-                                                </a>
-                                            </div>
-                                        {% endif %}
                                     </div>
                                 {% endfor %}
                             </div>
@@ -132,14 +123,14 @@
             </div>
         </section>
 
-        <!-- 3-BO'LIM: Izoh va Muammo Rasmini Qoldirish Formasi -->
+        <!-- 3-BO'LIM: Izoh Qoldirish Formasi -->
         <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 space-y-4">
             <div class="flex items-center space-x-2 border-b border-slate-100 pb-4">
-                <i class="fa-solid fa-camera text-emerald-600 text-lg"></i>
-                <h3 class="text-lg font-bold text-slate-800">Ustaga Fikr yoki Muammo Rasmini Qoldirish</h3>
+                <i class="fa-solid fa-comment-dots text-emerald-600 text-lg"></i>
+                <h3 class="text-lg font-bold text-slate-800">Ustaga Fikr yoki Izoh Qoldirish</h3>
             </div>
 
-            <form action="/add-worker-review" method="post" enctype="multipart/form-data" class="space-y-4">
+            <form action="/add-worker-review" method="post" class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Ustani Tanlang</label>
@@ -168,18 +159,12 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Sizning Izohingiz / Muammo tavsifi</label>
-                    <textarea name="comment" placeholder="Muammoni va xizmat haqida yozib qoldiring..." required rows="3" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none"></textarea>
-                </div>
-
-                <!-- Rasm yuklash tugmasi -->
-                <div>
-                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Muammo yoki Bajarilgan Ish Rasmi (Ixtiyoriy)</label>
-                    <input type="file" name="photo" accept="image/*" class="w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-600 hover:file:bg-indigo-100 cursor-pointer border border-slate-200 rounded-xl bg-slate-50">
+                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Sizning Izohingiz</label>
+                    <textarea name="comment" placeholder="Ustanining xizmati haqida fikringizni yozib qoldiring..." required rows="3" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none"></textarea>
                 </div>
 
                 <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition duration-200 shadow-md hover:shadow-lg">
-                    Izoh va Rasmni Saqlash
+                    Izohni Saqlash
                 </button>
             </form>
         </section>
