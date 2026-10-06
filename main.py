@@ -62,10 +62,10 @@ BRANDS = ["Apple", "Samsung", "Xiaomi", "LG", "Bosch", "Beko", "Artel", "Lenovo"
 
 WORKER_REVIEWS_DB = {
     "Jasurbek Aliyev (iPhone master)": [
-        {"client": "Murod", "comment": "Ekranini 20 daqiqada almashtirib berdi, super!", "rating": 5, "photo": None}
+        {"client": "Murod", "comment": "Ekranini 20 daqiqada almashtirib berdi, super!", "rating": 5, "photo": ""}
     ],
     "Nodir Abdullayev": [
-        {"client": "Sardor", "comment": "Kir mashinani gigiyenik tozalab berdi, hidlar yo'qoldi.", "rating": 5, "photo": None}
+        {"client": "Sardor", "comment": "Kir mashinani gigiyenik tozalab berdi, hidlar yo'qoldi.", "rating": 5, "photo": ""}
     ]
 }
 
@@ -102,13 +102,10 @@ async def add_worker_review(
     rating: int = Form(5),
     photo: UploadFile = File(None)
 ):
-    photo_url = None
+    photo_url = ""
     if photo and photo.filename:
         try:
-            # Papka borligini tekshirish
             os.makedirs(UPLOAD_DIR, exist_ok=True)
-            
-            # Fayl nomidagi probellarni o'chirish
             safe_filename = photo.filename.replace(" ", "_")
             file_path = os.path.join(UPLOAD_DIR, safe_filename)
             
@@ -116,8 +113,8 @@ async def add_worker_review(
                 shutil.copyfileobj(photo.file, buffer)
             photo_url = f"/uploads/{safe_filename}"
         except Exception as e:
-            print(f"Rasm saqlashda xatolik: {e}")
-            photo_url = None
+            print(f"Rasm yuklash xatosi: {e}")
+            photo_url = ""
 
     if worker_name not in WORKER_REVIEWS_DB:
         WORKER_REVIEWS_DB[worker_name] = []
