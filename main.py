@@ -1,13 +1,23 @@
-from fastapi import FastAPI, Request, Form
+import os
+import shutil
+from fastapi import FastAPI, Request, Form, File, UploadFile
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
 
-# Подключаем папку с шаблонами
+# Yuklangan rasmlarni saqlash uchun papka yaratamiz
+UPLOAD_DIR = "uploads"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+# Rasmlarni brauzerda ko'rsatish uchun statik papka sifatida ulaymiz
+app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
+
+# Shablonlar papkasini ulaymiz
 templates = Jinja2Templates(directory="templates")
 
-# База данных категорий, услуг и мастеров
+# Kategoriya va Xizmatlar
 SERVICES_DB = {
     "Maishiy texnika": {
         "Kir yuvish mashinasiga gigiyenik xizmat ko'rsatish va tozalash": [
@@ -52,51 +62,5 @@ BRANDS = ["Apple", "Samsung", "Xiaomi", "LG", "Bosch", "Beko", "Artel", "Lenovo"
 
 WORKER_REVIEWS_DB = {
     "Jasurbek Aliyev (iPhone master)": [
-        {"client": "Murod", "comment": "Ekranini 20 daqiqada almashtirib berdi, super!", "rating": 5}
+        {"client": "Murod", "comment": "Ekranini 20 daqiqada almashtirib berdi, super!", "rating": 5, "photo": None}
     ],
-    "Nodir Abdullayev": [
-        {"client": "Sardor", "comment": "Kir mashinani gigiyenik tozalab berdi, hidlar yo'qoldi.", "rating": 5}
-    ]
-}
-
-@app.get("/", response_class=HTMLResponse)
-async def read_root(request: Request):
-    all_workers = []
-    for category in SERVICES_DB.values():
-        for service, workers in category.items():
-            for w in workers:
-                if w[0] not in all_workers:
-                    all_workers.append(w[0])
-
-    return templates.TemplateResponse("index.html", {
-        "request": request,
-        "categories": SERVICES_DB,
-        "brands": BRANDS,
-        "workers": all_workers,
-        "reviews_db": WORKER_REVIEWS_DB
-    })
-
-@app.get("/get-services")
-async def get_services(category: str):
-    return list(SERVICES_DB.get(category, {}).keys())
-
-@app.get("/get-technicians")
-async def get_technicians(category: str, service: str, brand: str = ""):
-    return SERVICES_DB.get(category, {}).get(service, [])
-
-@app.post("/add-worker-review")
-async def add_worker_review(
-    worker_name: str = Form(...),
-    client_name: str = Form(...),
-    comment: str = Form(...),
-    rating: int = Form(5)
-):
-    if worker_name not in WORKER_REVIEWS_DB:
-        WORKER_REVIEWS_DB[worker_name] = []
-        
-    WORKER_REVIEWS_DB[worker_name].append({
-        "client": client_name,
-        "comment": comment,
-        "rating": rating
-    })
-    return RedirectResponse(url="/", status_code=303)
